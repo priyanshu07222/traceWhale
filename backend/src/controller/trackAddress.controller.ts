@@ -1,13 +1,11 @@
 import { Request, Response } from "express";
 import prisma from "../db";
-import Sendmail from "../services/emailService";
 
 const trackAddress = async (req:Request, res: Response) => {
     const response = req.body;
     const address = response.address;
     const amount = Number(response.amount)
     const userId = Number(req.query.userId)
-    Sendmail("akanshutiwari2006soe@gmail.com", amount)
 
     console.log("userid", userId)
 

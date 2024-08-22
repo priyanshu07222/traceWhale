@@ -1,4 +1,6 @@
 import nodemailer from 'nodemailer'
+import getAllUserEmail from '../utils/getAllUser'
+
 
 
 const transporter = nodemailer.createTransport({
@@ -13,11 +15,12 @@ const transporter = nodemailer.createTransport({
 });
 
 
-const Sendmail = async (to:string, amountInUSD:Number) => {
+const Sendmail = async (amountInUSD:Number) => {
+  const Allmail = await getAllUserEmail();
     try {
       const info = await transporter.sendMail({
           from: '"whale Alert" <priyanshu16181389@gmail.com>',
-          to,
+          to: Allmail?.join(','),
           subject: "Whale Transaction Detected🚨",
           text:"jfdljfl",
           html: `<p>💡 We track the transaction around ${amountInUSD} on Solana chain and you can also track on-chain (DEX) whale activity that gives you better understanding on what's going on in the market. </p>`
@@ -29,5 +32,7 @@ const Sendmail = async (to:string, amountInUSD:Number) => {
       // res.status(500).send("Error sending email");
     }
 }
+
+
 
 export default Sendmail;
