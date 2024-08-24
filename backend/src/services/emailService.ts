@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer'
-import getAllUserEmail from '../utils/getAllUser'
+import getAllUserEmail, { getUserEmailWithUserId } from '../utils/getAllUser'
 
 
 
@@ -24,6 +24,27 @@ const Sendmail = async (amountInUSD:Number) => {
           subject: "Whale Transaction Detected🚨",
           text:"jfdljfl",
           html: `<p>💡 We track the transaction around ${amountInUSD} on Solana chain and you can also track on-chain (DEX) whale activity that gives you better understanding on what's going on in the market. </p>`
+      })
+
+      console.log("Message sent: %s", info.messageId);
+    } catch (error) {
+      console.error("Error sending email:", error);
+      // res.status(500).send("Error sending email");
+    }
+}
+
+export const SendmailTrackedAddress = async (txnSignature: string, address: string, userId: number) => {
+  const mail = await getUserEmailWithUserId(userId);
+  if(!mail){
+    return;
+  }
+    try {
+      const info = await transporter.sendMail({
+          from: '"Transaction Alert" <priyanshu16181389@gmail.com>',
+          to: mail,
+          subject: `Transaction Detected🚨 on this ${address}`,
+          text:"jfdljfl",
+          html: `<p>💡 We detect some activity on this address ${address}, the recent transaction signature is this ${txnSignature} . For more details check on Solana Explorer. </p>`
       })
 
       console.log("Message sent: %s", info.messageId);

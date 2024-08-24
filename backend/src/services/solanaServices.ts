@@ -6,8 +6,6 @@ import Sendmail from './emailService';
 const connection =  new web3.Connection("https://mainnet.helius-rpc.com/?api-key=b55951f7-cd70-411d-8962-abbd2e2c7877", 'confirmed');
 const limit = pLimit(1)
 
-// connection.onAccountChange()
-
 
 const getTransaction = async() => {
     connection.onLogs('all', async(logs) => {
@@ -16,7 +14,7 @@ const getTransaction = async() => {
                 const signature = logs.signature;
                 const amount = await getTransactionAmount(signature);
                 if(Number(amount) > 10) {
-                    Sendmail(Number(amount) * web3.LAMPORTS_PER_SOL)
+                    Sendmail(Number(amount))
                     console.log(`whale detected:`,amount);
                     // notifyClients(wsServer, signature, Number(amount))
                 }
