@@ -4,6 +4,10 @@ import prisma from '../db';
 const getAllUserEmail = async() => {
     try {
       const users = await prisma.user.findMany()
+
+      if(!users) {
+        return null;
+      }
   
       const userEmail = users.map((user) => {
         return user.email

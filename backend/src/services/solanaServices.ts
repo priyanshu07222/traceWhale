@@ -1,21 +1,24 @@
 import * as web3 from '@solana/web3.js'
 import pLimit from 'p-limit';
-import WebSocket from 'ws';
+// import WebSocket from 'ws';
+import Sendmail from './emailService';
 
 const connection =  new web3.Connection("https://mainnet.helius-rpc.com/?api-key=b55951f7-cd70-411d-8962-abbd2e2c7877", 'confirmed');
 const limit = pLimit(1)
 
+// connection.onAccountChange()
 
 
-const getTransaction = async(wsServer: WebSocket.Server) => {
+const getTransaction = async() => {
     connection.onLogs('all', async(logs) => {
         try {
             await limit(async() => {
                 const signature = logs.signature;
                 const amount = await getTransactionAmount(signature);
-                if(Number(amount) > 1) {
+                if(Number(amount) > 10) {
+                    Sendmail(Number(amount) * web3.LAMPORTS_PER_SOL)
                     console.log(`whale detected:`,amount);
-                    notifyClients(wsServer, signature, Number(amount))
+                    // notifyClients(wsServer, signature, Number(amount))
                 }
             })
             
@@ -37,18 +40,19 @@ const getTransactionAmount = async(signature: web3.TransactionSignature):Promise
      return Math.abs(amount);
 }
 
-const notifyClients = (wsServer:WebSocket.Server, transactionSignature: string, amountInSol:number) => {
-    wsServer.clients.forEach((client) => {
-        if(client.readyState === WebSocket.OPEN) {
-            client.send(JSON.stringify({
-                type:"whale_transaction",
-                amountInSol,
-                transactionSignature,
-                amountInUSD: amountInSol * 270
-            }))
-        }
-    })
-}
+// const notifyClients = (wsServer:WebSocket.Server, transactionSignature: string, amountInSol:number) => {
+//     wsServer.clients.forEach((client) => {
+//         if(client.readyState === WebSocket.OPEN) {
+//             client.send(JSON.stringify({
+//                 type:"whale_transaction",
+//                 amountInSol,
+//                 transactionSignature,
+//                 amountInUSD: amountInSol * 270
+//             }))
+//         }
+//     })
+// }
+
 
 export default getTransaction;
 

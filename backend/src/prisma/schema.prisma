@@ -19,7 +19,7 @@ model User {
   email         String
   password      String
   trackAccounts TrackAccounts[]
-  notifications Notification[]
+  // notifications Notification[]
   createdAt     DateTime              @default(now())
   updatedAt     DateTime              @updatedAt
 }
@@ -35,13 +35,13 @@ model TrackAccounts {
   updatedAt         DateTime          @updatedAt
 }
 
-model Notification {
-  id               Int                @unique @default(autoincrement())
-  msg              String
-  user             User               @relation(fields: [userId], references: [id])
-  userId           Int
-  status           Boolean
-  sentAt           DateTime
-  createdAt        DateTime
-  updatedAt        DateTime
-}
+// model Notification {
+//   id               Int                @unique @default(autoincrement())
+//   msg              String
+//   user             User               @relation(fields: [userId], references: [id])
+//   userId           Int
+//   status           Boolean
+//   sentAt           DateTime
+//   createdAt        DateTime
+//   updatedAt        DateTime
+// }

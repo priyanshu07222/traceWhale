@@ -4,7 +4,7 @@ import prisma from "../db";
 const trackAddress = async (req:Request, res: Response) => {
     const response = req.body;
     const address = response.address;
-    const amount = Number(response.amount)
+    let amount = Number(response.amount)
     const userId = Number(req.query.userId)
 
     console.log("userid", userId)
@@ -15,6 +15,10 @@ const trackAddress = async (req:Request, res: Response) => {
         return res.status(401).json({
             msg: "no address passed"
         })
+    }
+
+    if(!amount) {
+        amount = 0;
     }
 
     const data = await prisma.trackAccounts.findFirst({
@@ -44,7 +48,29 @@ const trackAddress = async (req:Request, res: Response) => {
         trackAccounts
     })
 
+}
 
+export const getTrackingAddress = async(req:Request, res:Response) => {
+    const userId = Number(req.query.userId)
+
+    if(!userId) {
+        return null;
+    }
+
+    const data = await prisma.trackAccounts.findMany({
+        where: {
+           userId
+        }
+    })
+
+
+    if(!data){
+        return "User not found"
+    }
+
+    return res.json({
+        data
+    })
 }
 
 export default trackAddress;
