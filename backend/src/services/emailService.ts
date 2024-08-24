@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer'
 import getAllUserEmail, { getUserEmailWithUserId } from '../utils/getAllUser'
+import { LAMPORTS_PER_SOL } from '@solana/web3.js';
 
 
 
@@ -15,7 +16,7 @@ const transporter = nodemailer.createTransport({
 });
 
 
-const Sendmail = async (amountInUSD:Number) => {
+const Sendmail = async (amountInLamport:Number, signature: string) => {
   const Allmail = await getAllUserEmail();
     try {
       const info = await transporter.sendMail({
@@ -23,7 +24,7 @@ const Sendmail = async (amountInUSD:Number) => {
           to: Allmail?.join(','),
           subject: "Whale Transaction Detected🚨",
           text:"jfdljfl",
-          html: `<p>💡 We track the transaction around ${amountInUSD} on Solana chain and you can also track on-chain (DEX) whale activity that gives you better understanding on what's going on in the market. </p>`
+          html: `<p>💡 We track the transaction around ${amountInLamport } SOL on Solana chain and you can also track on-chain (DEX) whale activity that gives you better understanding on what's going on in the market. This is the txn signature -> ${signature} </p>`
       })
 
       console.log("Message sent: %s", info.messageId);

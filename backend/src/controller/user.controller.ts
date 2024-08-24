@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import prisma from "../db";
+import bcrypt from 'bcrypt'
 
 
 export const registerUser = async (req:Request, res:Response) => {
@@ -30,12 +31,13 @@ export const registerUser = async (req:Request, res:Response) => {
             msg: "user already exist with this email"
         })
     }
+    const hashedPassword = await bcrypt.hash(password, 10)
 
     const data = await prisma.user.create({
         data:{
             name,
             email,
-            password
+            password: hashedPassword
         }
     })
 
@@ -72,9 +74,9 @@ export const loginUser = async (req: Request, res:Response) => {
     
     console.log("is user", isUserExist)
 
-    const lotuser = await prisma.user.findMany()
+    // const lotuser = await prisma.user.findMany()
 
-    console.log("lotuser", lotuser)
+    // console.log("lotuser", lotuser)
 
     
 
@@ -86,7 +88,9 @@ export const loginUser = async (req: Request, res:Response) => {
 
     console.log("isUserexist", isUserExist)
 
-    if (isUserExist && password === isUserExist.password) {
+    const isPasswordCorrect = await bcrypt.compare(password, isUserExist.password)
+
+    if (isUserExist && isPasswordCorrect) {
         return res.status(200).json(
             isUserExist.id
         )

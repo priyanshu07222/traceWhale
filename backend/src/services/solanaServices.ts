@@ -14,7 +14,7 @@ const getTransaction = async() => {
                 const signature = logs.signature;
                 const amount = await getTransactionAmount(signature);
                 if(Number(amount) > 10) {
-                    Sendmail(Number(amount))
+                    Sendmail(Number(amount), signature)
                     console.log(`whale detected:`,amount);
                     // notifyClients(wsServer, signature, Number(amount))
                 }
