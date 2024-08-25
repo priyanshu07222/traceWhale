@@ -8,10 +8,6 @@ const trackAddress = async (req:Request, res: Response) => {
     let amount = Number(response.amount)
     const userId = Number(req.query.userId)
 
-    console.log("userid", userId)
-
-    console.log(address, amount, userId)
-
     if (!address) {
         return res.status(401).json({
             msg: "no address passed"
@@ -55,7 +51,6 @@ export const getTrackingAddress = async(req:Request, res:Response) => {
     const userId = Number(req.query.userId)
 
     const data = await getAllTrackedAddress(userId);
-    console.log(data, "hello")
 
     return res.json({
         data

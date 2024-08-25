@@ -27,7 +27,7 @@ const Sendmail = async (amountInLamport:Number, signature: string) => {
           html: `<p>💡 We track the transaction around ${amountInLamport } SOL on Solana chain and you can also track on-chain (DEX) whale activity that gives you better understanding on what's going on in the market. This is the txn signature -> ${signature} </p>`
       })
 
-      console.log("Message sent: %s", info.messageId);
+      // console.log("Message sent: %s", info.messageId);
     } catch (error) {
       console.error("Error sending email:", error);
       // res.status(500).send("Error sending email");
@@ -48,7 +48,7 @@ export const SendmailTrackedAddress = async (txnSignature: string, address: stri
           html: `<p>💡 We detect some activity on this address ${address}, the recent transaction signature is this ${txnSignature} . For more details check on Solana Explorer. </p>`
       })
 
-      console.log("Message sent: %s", info.messageId);
+      // console.log("Message sent: %s", info.messageId);
     } catch (error) {
       console.error("Error sending email:", error);
       // res.status(500).send("Error sending email");

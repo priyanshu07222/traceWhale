@@ -5,10 +5,10 @@ import { SendmailTrackedAddress } from './emailService';
 import { getTransactionAmount } from './solanaServices';
 import pLimit from 'p-limit';
 
-const connection = new web3.Connection(
-    "https://devnet.helius-rpc.com/?api-key=b55951f7-cd70-411d-8962-abbd2e2c7877",
-    'confirmed'
-);
+const rpcEndpoint = process.env.RPC_ENDPOINT
+
+const connection =  new web3.Connection(rpcEndpoint!, 'confirmed');
+
 const limit = pLimit(1);
 let processingOnAccountChange = false;
 

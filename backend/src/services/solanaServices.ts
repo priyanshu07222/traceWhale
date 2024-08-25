@@ -2,7 +2,9 @@ import * as web3 from '@solana/web3.js'
 import pLimit from 'p-limit';
 import Sendmail from './emailService';
 
-const connection =  new web3.Connection("https://devnet.helius-rpc.com/?api-key=b55951f7-cd70-411d-8962-abbd2e2c7877", 'confirmed');
+const rpcEndpoint = process.env.RPC_ENDPOINT
+
+const connection =  new web3.Connection(rpcEndpoint!, 'confirmed');
 const limit = pLimit(1)
 
 
@@ -14,7 +16,7 @@ const getTransaction = async() => {
                 const amount = await getTransactionAmount(signature);
                 if(Number(amount) > 10) {
                     Sendmail(Number(amount), signature)
-                    console.log(`whale detected:`,amount);
+                    // console.log(`whale detected:`,amount);
                 }
             })
             

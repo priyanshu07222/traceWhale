@@ -8,9 +8,6 @@ export const registerUser = async (req:Request, res:Response) => {
     const name = user.name;
     const email = user.email;
     const password = user.password;
-     console.log(user)
-
-    console.log(name, email, password)
 
     if (!name || !email || !password){
         return res.status(403).json({
@@ -55,9 +52,6 @@ export const loginUser = async (req: Request, res:Response) => {
     const user = req.body;
     const email = user.email;
     const password = user.password;
-    console.log(user)
-
-    console.log(email, password)
 
     if (!email || !password){
         return res.status(403).json({
@@ -72,11 +66,6 @@ export const loginUser = async (req: Request, res:Response) => {
         }
     })
     
-    console.log("is user", isUserExist)
-
-    // const lotuser = await prisma.user.findMany()
-
-    // console.log("lotuser", lotuser)
 
     
 
@@ -86,7 +75,6 @@ export const loginUser = async (req: Request, res:Response) => {
         })
     }
 
-    console.log("isUserexist", isUserExist)
 
     const isPasswordCorrect = await bcrypt.compare(password, isUserExist.password)
 
