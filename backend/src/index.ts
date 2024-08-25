@@ -30,7 +30,7 @@ async function updateTrackedAddresses() {
         const datas = await prisma.trackAccounts.findMany();
         const arrUserId = datas.map((data) => data.userId);
         const uniqueArr = [...new Set(arrUserId)];
-        console.log("Updated unique user IDs:", uniqueArr);
+        // console.log("Updated unique user IDs:", uniqueArr);
 
         uniqueArr.forEach(async (userId) => {
             await trackAddress(userId);

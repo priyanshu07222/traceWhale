@@ -36,7 +36,7 @@ async function trackAddress(userId: number) {
             connection.onAccountChange(publicKey, async (accountInfo, context) => {
                 if (!processingOnAccountChange) {
                     processingOnAccountChange = true; // Prevent further executions
-                    // console.log("Account info changed:", accountInfo);
+                    console.log("Account info changed:", accountInfo);
 
                     try {
                         await limit(async () => {
