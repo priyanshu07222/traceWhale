@@ -16,7 +16,7 @@ const getTransaction = async() => {
                 const amount = await getTransactionAmount(signature);
                 if(Number(amount) > 10) {
                     Sendmail(Number(amount), signature)
-                    // console.log(`whale detected:`,amount);
+                    console.log(`whale detected:`,amount);
                 }
             })
             

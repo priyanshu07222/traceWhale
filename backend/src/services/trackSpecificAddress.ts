@@ -46,7 +46,7 @@ async function trackAddress(userId: number) {
                             });
 
                             for (const signatureInfo of transactionSignatures) {
-                                // console.log(`Transaction Signature: ${signatureInfo.signature}`);
+                                console.log(`Transaction Signature: ${signatureInfo.signature}`);
 
                                 // Fetch the transaction details using the signature
                                 const transactionDetails = await connection.getTransaction(signatureInfo.signature, {
@@ -58,7 +58,7 @@ async function trackAddress(userId: number) {
 
                                 if (transactionDetails && isOnchainTxnAmountGreaterThanSpecifiedAmount) {
                                     await SendmailTrackedAddress(signatureInfo.signature, key, userId);
-                                    // console.log("Transaction details:", transactionDetails);
+                                    console.log("Transaction details:", transactionDetails);
                                 }
                             }
                         });

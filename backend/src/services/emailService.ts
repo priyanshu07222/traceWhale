@@ -48,7 +48,7 @@ export const SendmailTrackedAddress = async (txnSignature: string, address: stri
           html: `<p>💡 We detect some activity on this address ${address}, the recent transaction signature is this ${txnSignature} . For more details check on Solana Explorer. </p>`
       })
 
-      // console.log("Message sent: %s", info.messageId);
+      console.log("Message sent: %s", info.messageId);
     } catch (error) {
       console.error("Error sending email:", error);
       // res.status(500).send("Error sending email");

@@ -80,7 +80,8 @@ export const loginUser = async (req: Request, res:Response) => {
 
     if (isUserExist && isPasswordCorrect) {
         return res.status(200).json(
-            isUserExist.id
+            {userId:isUserExist.id,
+            userName:isUserExist.name}
         )
     }
 
