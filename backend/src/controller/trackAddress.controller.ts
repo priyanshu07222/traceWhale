@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import prisma from "../db";
 import getAllTrackedAddress from "../utils/getAlltrackedAddress";
+import { PublicKey } from "@solana/web3.js";
 
-const trackAddress = async (req:Request, res: Response) => {
+const trackAddress = async (req: Request, res: Response) => {
     const response = req.body;
     const address = response.address;
     let amount = Number(response.amount)
@@ -14,14 +15,29 @@ const trackAddress = async (req:Request, res: Response) => {
         })
     }
 
-    if(!amount) {
+    const validateSolanaAddress = (inputAddress: string) => {
+        try {
+            new PublicKey(inputAddress);
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+
+    if (!validateSolanaAddress(address)) {
+        return res.status(409).json({
+            msg: "invalid address"
+        })
+    }
+
+    if (!amount) {
         amount = 0;
     }
 
     const data = await prisma.trackAccounts.findFirst({
         where: {
             AND: [
-                {userId}, {accountAddress:address}
+                { userId }, { accountAddress: address }
             ]
         }
     })
@@ -41,13 +57,13 @@ const trackAddress = async (req:Request, res: Response) => {
     })
 
     res.status(201).json({
-        msg:"added successfully",
+        msg: "added successfully",
         trackAccounts
     })
 
 }
 
-export const getTrackingAddress = async(req:Request, res:Response) => {
+export const getTrackingAddress = async (req: Request, res: Response) => {
     const userId = Number(req.query.userId)
 
     const data = await getAllTrackedAddress(userId);
@@ -57,24 +73,24 @@ export const getTrackingAddress = async(req:Request, res:Response) => {
     })
 }
 
-export const updateAddressAmount = async(req:Request, res: Response) => {
+export const updateAddressAmount = async (req: Request, res: Response) => {
     const id = req.body.id;
     let amount = req.body.amount;
 
-    if(!id){
+    if (!id) {
         return res.status(409).json({
             msg: "id not provided"
         })
     }
 
-    if(!amount){
+    if (!amount) {
         amount = 0;
     }
 
     try {
         const x = await prisma.trackAccounts.update({
             where: {
-                 id
+                id
             },
             data: {
                 amount
@@ -89,11 +105,11 @@ export const updateAddressAmount = async(req:Request, res: Response) => {
     }
 }
 
-export const deleteAddress = async(req: Request, res: Response) => {
+export const deleteAddress = async (req: Request, res: Response) => {
     const id = req.body.id;
 
 
-    if(!id){
+    if (!id) {
         return res.status(409).json({
             msg: "id not provided"
         })
@@ -101,7 +117,7 @@ export const deleteAddress = async(req: Request, res: Response) => {
 
     try {
         const delAddress = await prisma.trackAccounts.delete({
-            where:{
+            where: {
                 id
             }
         })
